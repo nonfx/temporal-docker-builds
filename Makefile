@@ -7,10 +7,8 @@ COLOR := "\e[1;36m%s\e[0m\n"
 CGO_ENABLED ?= 0
 
 TEMPORAL_ROOT := temporal
-TCTL_ROOT := tctl
 CLI_ROOT := cli
 TEMPORAL_SHA := $(shell sh -c 'git submodule status -- temporal | cut -c2-41')
-TCTL_SHA := $(shell sh -c "git submodule status -- tctl | cut -c2-41")
 
 IMAGE_SHA_TAG ?= sha-$(shell git rev-parse --short HEAD)
 IMAGE_BRANCH_TAG ?= branch-$(shell git rev-parse --abbrev-ref HEAD)
@@ -19,7 +17,6 @@ DOCKER ?= docker buildx
 BAKE := IMAGE_SHA_TAG=$(IMAGE_SHA_TAG) \
 		IMAGE_BRANCH_TAG=$(IMAGE_BRANCH_TAG) \
 		TEMPORAL_SHA=$(TEMPORAL_SHA) \
-		TCTL_SHA=$(TCTL_SHA) \
 		$(DOCKER) bake
 NATIVE_ARCH := $(shell go env GOARCH)
 
@@ -42,8 +39,8 @@ install-submodules:
 
 .PHONY: update-submodules
 update-submodules:
-	@printf $(COLOR) "Updating temporal and tctl submodules..."
-	git submodule update --force --remote $(TEMPORAL_ROOT) $(TCTL_ROOT)
+	@printf $(COLOR) "Updating temporal submodule..."
+	git submodule update --force --remote $(TEMPORAL_ROOT)
 
 ##### Docker #####
 
@@ -58,9 +55,6 @@ update-submodules:
 	@cp $(TEMPORAL_ROOT)/tdbg build/$*/
 	@cd $(CLI_ROOT) && GOOS=linux GOARCH=$* CGO_ENABLED=$(CGO_ENABLED) go build ./cmd/temporal
 	@cp ./$(CLI_ROOT)/temporal build/$*/
-	@GOOS=linux GOARCH=$* CGO_ENABLED=$(CGO_ENABLED) make -C $(TCTL_ROOT) build
-	@cp ./$(TCTL_ROOT)/tctl build/$*/
-	@cp ./$(TCTL_ROOT)/tctl-authorization-plugin build/$*/
 
 .PHONY: bins
 .NOTPARALLEL: bins
@@ -126,7 +120,6 @@ test:
 .PHONY: update-tool-submodules
 update-tool-submodules:
 	./scripts/update-tool-submodules.sh cli
-	./scripts/update-tool-submodules.sh tctl
 
 .PHONY: update-alpine
 update-alpine:

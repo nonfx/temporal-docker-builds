@@ -1,9 +1,33 @@
-ARG BASE_SERVER_IMAGE=temporalio/base-server:1.15.12
+# Safe base-server
+ARG BASE_IMAGE=alpine:3.22
 
-FROM ${BASE_SERVER_IMAGE} as temporal-server
+# Dockerize builder
+FROM golang:1.25.1-alpine3.22 AS builder
+RUN apk add --no-cache git
+ARG DOCKERIZE_VERSION=v0.9.6
+RUN go install github.com/jwilder/dockerize@${DOCKERIZE_VERSION}
+RUN cp $(which dockerize) /usr/local/bin/dockerize
+
+##### base-server target #####
+FROM ${BASE_IMAGE} AS base-server
+
+RUN apk update && apk upgrade --no-cache
+RUN apk add --no-cache --upgrade \
+    ca-certificates \
+    tzdata \
+    bash \
+    'curl>=8.14.1-r2' \
+    'libssl3>=3.5.4-r0' \
+    'libcrypto3>=3.5.4-r0'
+
+COPY --from=builder /usr/local/bin/dockerize /usr/local/bin
+
+SHELL ["/bin/bash", "-c"]
+
+##### Temporal Server #####
+FROM base-server as temporal-server
 ARG TARGETARCH
 ARG TEMPORAL_SHA=unknown
-ARG TCTL_SHA=unknown
 
 WORKDIR /etc/temporal
 
@@ -19,11 +43,8 @@ USER temporal
 
 # store component versions in the environment
 ENV TEMPORAL_SHA=${TEMPORAL_SHA}
-ENV TCTL_SHA=${TCTL_SHA}
 
 # binaries
-COPY ./build/${TARGETARCH}/tctl /usr/local/bin
-COPY ./build/${TARGETARCH}/tctl-authorization-plugin /usr/local/bin
 COPY ./build/${TARGETARCH}/temporal-server /usr/local/bin
 COPY ./build/${TARGETARCH}/temporal /usr/local/bin
 
