@@ -10,7 +10,7 @@ retract (
 require (
 	cloud.google.com/go/storage v1.51.0
 	github.com/Masterminds/sprig/v3 v3.3.0
-	github.com/aws/aws-sdk-go v1.55.6
+	// github.com/aws/aws-sdk-go v1.55.6 // REMOVED: deprecated package
 	github.com/blang/semver/v4 v4.0.0
 	github.com/cactus/go-statsd-client/v5 v5.1.0
 	github.com/dgryski/go-farm v0.0.0-20240924180020-3414d57e47da
@@ -182,5 +182,14 @@ require (
 	modernc.org/token v1.1.0 // indirect
 )
 
+// REMOVED: deprecated aws-sdk-go package
+// require github.com/aws/aws-sdk-go v1.43.21
+
 // Security patch: force golang.org/x/crypto to v0.35.0+ to fix vulnerabilities
 replace golang.org/x/crypto => golang.org/x/crypto v0.35.0
+
+// Exclude all versions of the deprecated aws-sdk-go package
+exclude github.com/aws/aws-sdk-go v1.43.21
+exclude github.com/aws/aws-sdk-go v1.44.151
+exclude github.com/aws/aws-sdk-go v1.55.6
+exclude github.com/aws/aws-sdk-go v1.55.8
