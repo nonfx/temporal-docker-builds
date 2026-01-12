@@ -1,10 +1,10 @@
 # Safe base-server
-ARG BASE_IMAGE=alpine:3.22
+ARG BASE_IMAGE=alpine:3.23
 
 # Dockerize builder
-FROM golang:1.25.1-alpine3.22 AS builder
+FROM golang:1.25.5-alpine3.23 AS builder
 RUN apk add --no-cache git
-ARG DOCKERIZE_VERSION=v0.9.6
+ARG DOCKERIZE_VERSION=v0.9.9
 RUN go install github.com/jwilder/dockerize@${DOCKERIZE_VERSION}
 RUN cp $(which dockerize) /usr/local/bin/dockerize
 

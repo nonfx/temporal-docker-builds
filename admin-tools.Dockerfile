@@ -1,5 +1,5 @@
 ##### Build base-admin-tools locally #####
-FROM alpine:3.22 AS cqlsh-builder
+FROM alpine:3.23 AS cqlsh-builder
 
 # These are necessary to install cqlsh
 RUN apk add --update --no-cache \
@@ -11,7 +11,7 @@ RUN apk add --update --no-cache \
 
 RUN pipx install --global cqlsh
 
-FROM alpine:3.22 AS base-admin-tools
+FROM alpine:3.23 AS base-admin-tools
 
 RUN apk upgrade --no-cache
 RUN apk add --no-cache \
@@ -54,9 +54,8 @@ COPY ./temporal/schema /etc/temporal/schema
 # Alpine has a /etc/bash/bashrc that sources all files named /etc/bash/*.sh for
 # interactive shells, so we can add completion logic in /etc/bash/temporal-completion.sh
 # Completion for temporal depends on the bash-completion package.
-RUN apk add --no-cache bash-completion && \
-    temporal completion bash > /etc/bash/temporal-completion.sh && \
-    addgroup -g 1000 temporal && \
+# Note: bash-completion is not available in Alpine 3.23, skipping for now
+RUN addgroup -g 1000 temporal && \
     adduser -u 1000 -G temporal -D temporal
 USER temporal
 WORKDIR /etc/temporal

@@ -1,6 +1,6 @@
 module go.temporal.io/server
 
-go 1.25.1
+go 1.25.5
 
 retract (
 	v1.26.1 // Contains retractions only.
@@ -68,8 +68,8 @@ require (
 	go.uber.org/zap v1.27.0
 	golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa
 	golang.org/x/oauth2 v0.32.0
-	golang.org/x/sync v0.17.0
-	golang.org/x/text v0.30.0
+	golang.org/x/sync v0.19.0
+	golang.org/x/text v0.32.0
 	golang.org/x/time v0.10.0
 	google.golang.org/api v0.224.0
 	google.golang.org/grpc v1.72.2
@@ -163,9 +163,9 @@ require (
 	go.opentelemetry.io/proto/otlp v1.5.0
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/dig v1.18.0 // indirect
-	golang.org/x/crypto v0.43.0 // indirect
-	golang.org/x/net v0.46.0 // indirect
-	golang.org/x/sys v0.37.0 // indirect
+	golang.org/x/crypto v0.46.0 // indirect
+	golang.org/x/net v0.47.0 // indirect
+	golang.org/x/sys v0.39.0 // indirect
 	google.golang.org/genproto v0.0.0-20250303144028-a0af3efb3deb // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250303144028-a0af3efb3deb // indirect
@@ -182,14 +182,23 @@ require (
 	modernc.org/token v1.1.0 // indirect
 )
 
+require github.com/aws/aws-sdk-go v1.55.4
+
 // REMOVED: deprecated aws-sdk-go package
 // require github.com/aws/aws-sdk-go v1.43.21
 
-// Security patch: force golang.org/x/crypto to v0.35.0+ to fix vulnerabilities
-replace golang.org/x/crypto => golang.org/x/crypto v0.35.0
+// Security patch: force golang.org/x/crypto to v0.46.0+ to fix vulnerabilities
+replace golang.org/x/crypto => golang.org/x/crypto v0.46.0
 
 // Exclude all versions of the deprecated aws-sdk-go package
 exclude github.com/aws/aws-sdk-go v1.43.21
+
 exclude github.com/aws/aws-sdk-go v1.44.151
+
+exclude github.com/aws/aws-sdk-go v1.55.5
+
 exclude github.com/aws/aws-sdk-go v1.55.6
+
+exclude github.com/aws/aws-sdk-go v1.55.7
+
 exclude github.com/aws/aws-sdk-go v1.55.8

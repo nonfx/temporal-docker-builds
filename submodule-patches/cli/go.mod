@@ -1,6 +1,6 @@
 module github.com/temporalio/cli
 
-go 1.25.1
+go 1.25.5
 
 require (
 	github.com/BurntSushi/toml v1.4.0
@@ -14,7 +14,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.1
 	github.com/temporalio/ui-server/v2 v2.39.0
 	go.temporal.io/api v1.53.0
 	go.temporal.io/sdk v1.36.0
@@ -155,14 +155,14 @@ require (
 	go.uber.org/mock v0.5.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
-	golang.org/x/crypto v0.43.0 // indirect
+	golang.org/x/crypto v0.46.0 // indirect
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
-	golang.org/x/net v0.46.0 // indirect
+	golang.org/x/net v0.48.0 // indirect
 	golang.org/x/oauth2 v0.32.0 // indirect
-	golang.org/x/sync v0.17.0 // indirect
-	golang.org/x/sys v0.37.0 // indirect
-	golang.org/x/text v0.30.0 // indirect
-	golang.org/x/time v0.11.0 // indirect
+	golang.org/x/sync v0.19.0 // indirect
+	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/time v0.14.0 // indirect
 	google.golang.org/api v0.228.0 // indirect
 	google.golang.org/genproto v0.0.0-20250324211829-b45e905df463 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250324211829-b45e905df463 // indirect
@@ -182,11 +182,17 @@ require (
 // Use local modified temporal server to avoid aws-sdk-go dependency
 replace go.temporal.io/server => ../temporal
 
-// Security patch: force golang.org/x/crypto to v0.35.0+ to fix vulnerabilities
-replace golang.org/x/crypto => golang.org/x/crypto v0.35.0
+// Security patch: force golang.org/x/crypto to v0.46.0+ to fix vulnerabilities
+replace golang.org/x/crypto => golang.org/x/crypto v0.46.0
+
+// Security patch: force github.com/labstack/echo/v4 to v4.15.0+ to fix JSON Log Injection vulnerability
+replace github.com/labstack/echo/v4 => github.com/labstack/echo/v4 v4.15.0
 
 // Exclude all versions of the deprecated aws-sdk-go package
 exclude github.com/aws/aws-sdk-go v1.43.21
+
 exclude github.com/aws/aws-sdk-go v1.44.151
+
 exclude github.com/aws/aws-sdk-go v1.55.6
+
 exclude github.com/aws/aws-sdk-go v1.55.8
